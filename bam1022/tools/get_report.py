@@ -4,7 +4,7 @@ from .. import monitor
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', choices=['all', 'new', 'last'],
+    parser.add_argument('--type', choices=['all', 'new', 'last'],
         help='Which data report to run', default='all')
     args = parser.parse_args()
 
