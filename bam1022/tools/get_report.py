@@ -12,9 +12,10 @@ def main():
         'all': monitor.CMD_DATA_ALL,
         'new': monitor.CMD_DATA_NEW,
         'last': monitor.CMD_DATA_LAST,
-    }[args.data]
+    }[args.type]
 
-    data = monitor.get_data(command)
+    data = monitor.run(command)
+    print(data)
 
 if __name__ == '__main__':
     main()

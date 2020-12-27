@@ -1,7 +1,10 @@
+import dotenv
+dotenv.load_dotenv()
+
 import os
 
 from .driver import BAM1022
-from .sjvair import SJVAirClient
+from .sjvair import SJVAirAPI
 
 monitor = BAM1022(
     port=os.environ.get('BAM1022_PORT'),

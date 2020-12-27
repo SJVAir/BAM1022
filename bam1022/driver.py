@@ -1,8 +1,10 @@
+import csv
 import os
 import sys
 import time
 
 from datetime import datetime
+from io import StringIO
 
 import requests
 import serial as serial
@@ -88,14 +90,31 @@ class BAM1022:
 
     def get_data(self, cmd):
         '''
-            Get a report and parse the CSV data.
+            Get a report and parse the CSV data, filtering
+            out bad data and yielding each row.
         '''
-        return self.run(cmd)
+        data = self.run(cmd)
+
+        data = '\n'.join(data.splitlines()[6:])  # Don't need the first few lines
+        file = StringIO(data)
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            try:
+                if int(row['Time'][:4]) < 2020:
+                    # If the datetime is pre-2020, consider the row bad.
+                    continue
+            except Exception:
+                # If the year couldn't be parsed out, consider the row bad.
+                continue
+
+            yield dict(row)
 
     def update_datetime(self):
+        ''' Set the date/time (UTC) on the BAM. '''
         self.unlock()
         self.run(self.CMD_DATE)
-        self.run(datetime.now().strftime('%Y-%m-%d'))
+        self.run(datetime.utcnow().strftime('%Y-%m-%d'))
         self.run(self.CMD_TIME)
-        self.run(datetime.now().strftime('%H:%M:%S'))
+        self.run(datetime.utcnow().strftime('%H:%M:%S'))
         self.lock()

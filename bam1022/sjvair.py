@@ -1,4 +1,5 @@
 import json
+import os
 
 import requests
 
@@ -31,16 +32,18 @@ class Requestor:
 
 
 class SJVAirAPI:
-    domain = "www.sjvair.com"
+    base_url = os.environ.get('SJVAIR_URL', 'https://www.sjvair.com/api/1.0')
 
     def __init__(self, monitor_id):
         self.monitor_id = monitor_id
-        self.requestor = Requestor(self)
+        self.requestor = Requestor()
 
-    def request(self, path, **kwargs):
-        url = f"https://{self.domain}/api/1.0/{path}/"
+    def request(self, endpoint, **kwargs):
+        url = f"{self.base_url}/{endpoint}/"
         return self.requestor.request(url, **kwargs)
 
     def add_entry(self, payload):
-        path = f'monitors/{self.monitor_id}/entries'
-        return self.request(path, method='post', data=data)
+        endpoint = f'monitors/{self.monitor_id}/entries'
+        return self.request(endpoint, method='post', json=payload, headers={
+            'Access-Key': os.environ['SJVAIR_MONITOR_ACCESS_KEY'],
+        })
