@@ -21,9 +21,10 @@ class BAM1022:
     CMD_DATE = 'D'
     CMD_TIME = 'T'
 
-    def __init__(self, port=None, password=None):
+    def __init__(self, port=None, password=None, debug=False):
         self.port = port
         self.password = password or '0'
+        self.debug = debug
 
         self.serial = serial.Serial(
             port=self.port,
@@ -48,6 +49,10 @@ class BAM1022:
     def port(self, value):
         self._port = value
 
+    def log(self, message):
+        if self.debug:
+            print(message)
+
     def readlines(self):
         '''
             Read multiple lines from the serial connection
@@ -62,12 +67,12 @@ class BAM1022:
         '''
             Send a command to the monitor and return the response.
         '''
-        print(f'>> {command}')
+        self.log(f'>> {command}')
         command = f'{command}{self.CR}'.encode('utf-8')
         self.serial.write(command)
         time.sleep(1)  # Allow the monitor a second to respond
         output = self.readlines()
-        print(f'<< {output}')
+        self.log(f'<< {output}')
         return output
 
     def unlock(self):
@@ -109,6 +114,9 @@ class BAM1022:
                 continue
 
             yield dict(row)
+
+    def latest(self):
+        return next(self.get_data(self.CMD_DATA_LAST))
 
     def update_datetime(self):
         ''' Set the date/time (UTC) on the BAM. '''

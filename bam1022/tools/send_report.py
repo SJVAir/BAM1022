@@ -23,9 +23,6 @@ def main():
     for entry in data:
         print(f"Sending [{entry['ConcRT(ug/m3)']}] on [{entry['Time']}]")
         response = sjvair.add_entry(entry)
-        import code
-        code.interact(local=locals())
-        break
 
 
 if __name__ == '__main__':

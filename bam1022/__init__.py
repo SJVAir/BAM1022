@@ -9,6 +9,7 @@ from .sjvair import SJVAirAPI
 monitor = BAM1022(
     port=os.environ.get('BAM1022_PORT'),
     password=os.environ.get('BAM1022_PASSWORD'),
+    debug=bool(int(os.environ.get('BAM1022_DEBUG', 0))),
 )
 
 sjvair_api = SJVAirAPI(monitor_id=os.environ['SJVAIR_MONITOR_ID'])

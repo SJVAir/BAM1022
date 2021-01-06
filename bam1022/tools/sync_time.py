@@ -2,7 +2,9 @@ from .. import monitor
 
 
 def main():
-    print(monitor.update_datetime())
+    print('Syncing time...')
+    monitor.update_datetime()
+    print('...done.')
 
 if __name__ == '__main__':
     main()
