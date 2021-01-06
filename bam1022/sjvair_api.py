@@ -33,9 +33,10 @@ class Requestor:
 
 class SJVAirAPI:
     base_url = os.environ.get('SJVAIR_URL', 'https://www.sjvair.com/api/1.0')
+    monitor_id = os.environ.get('SJVAIR_MONITOR_ID')
+    access_key = os.environ.get('SJVAIR_MONITOR_ACCESS_KEY')
 
-    def __init__(self, monitor_id):
-        self.monitor_id = monitor_id
+    def __init__(self):
         self.requestor = Requestor()
 
     def request(self, endpoint, **kwargs):
@@ -45,5 +46,7 @@ class SJVAirAPI:
     def add_entry(self, payload):
         endpoint = f'monitors/{self.monitor_id}/entries'
         return self.request(endpoint, method='post', json=payload, headers={
-            'Access-Key': os.environ['SJVAIR_MONITOR_ACCESS_KEY'],
+            'Access-Key': self.access_key,
         })
+
+sjvair = SJVAirAPI()

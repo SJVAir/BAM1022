@@ -1,7 +1,6 @@
 import os
 
-from .. import monitor
-from ..sjvair import SJVAirAPI
+from .. import monitor, sjvair
 
 
 def main():
@@ -10,8 +9,6 @@ def main():
     parser.add_argument('--type', choices=['all', 'new', 'last'],
         help='Which data report to send', default='all')
     args = parser.parse_args()
-
-    sjvair = SJVAirAPI(monitor_id=os.environ['SJVAIR_MONITOR_ID'])
 
     command = {
         'all': monitor.CMD_DATA_ALL,
