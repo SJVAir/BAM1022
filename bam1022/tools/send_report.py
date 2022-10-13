@@ -18,6 +18,9 @@ def main():
 
     data = monitor.get_data(command)
     for entry in data:
+        if entry['ConcRT(ug/m3)'] == '+99999.0':
+            print(f"Skipping [{entry['ConcRT(ug/m3)']}] on [{entry['Time']}]")
+            continue
         print(f"Sending [{entry['ConcRT(ug/m3)']}] on [{entry['Time']}]")
         response = sjvair.add_entry(entry)
 
