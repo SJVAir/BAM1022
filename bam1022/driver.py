@@ -35,7 +35,7 @@ class BAM1022:
         )
 
         assert self.serial.is_open
-        assert self.run(self.CMD_INIT) == '*'
+        self.run(self.CMD_INIT)
 
     @property
     def port(self):
