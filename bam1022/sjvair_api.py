@@ -32,7 +32,7 @@ class Requestor:
 
 
 class SJVAirAPI:
-    base_url = os.environ.get('SJVAIR_URL', 'https://www.sjvair.com/api/1.0')
+    base_url = os.environ.get('SJVAIR_URL', 'https://www.sjvair.com/api/2.0')
     monitor_id = os.environ.get('SJVAIR_MONITOR_ID')
     access_key = os.environ.get('SJVAIR_MONITOR_ACCESS_KEY')
 
